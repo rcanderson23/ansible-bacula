@@ -1,0 +1,16 @@
+---
+# handlers file for bacula
+- name: restart postgresql
+  service:
+    name: postgresql
+    state: restarted
+
+- name: restart bacula-dir
+  service:
+    name: bacula-dir
+    state: restarted
+
+- name: restart bacula-sd
+  service:
+    name: bacula-sd
+    state: restarted

@@ -1,0 +1,27 @@
+---
+- name: transfer bacula config files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root 
+    group: bacula
+    mode: 0640
+  with_items:
+    - { src: 'bacula-dir.conf.j2', dest: '/etc/bacula/bacula-dir.conf' }
+    - { src: 'bacula-sd.conf.j2', dest: '/etc/bacula/bacula-sd.conf' }
+  notify:
+    - restart bacula-dir
+    - restart bacula-sd
+  tags:
+    - bacula
+
+- name: enable and start bacula services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - bacula-dir
+    - bacula-sd
+  tags:
+    - bacula

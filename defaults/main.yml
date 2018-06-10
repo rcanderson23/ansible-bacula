@@ -1,0 +1,17 @@
+---
+# defaults file for bacula
+db_name: bacula
+db_user: bacula
+db_user_password: bacula
+db_type: postgresql
+db_address: "127.0.0.1"
+db_port: 5432
+#
+#
+# bacula defaults
+bacula_concurrent_jobs: 3
+bacula_sd_password: baculapassword
+bacula_dir_password: baculapassword
+bacula_client_password: baculapassword
+bacula_mon_password: baculapassword
+bacula_sd_address: bacula.domain.tld

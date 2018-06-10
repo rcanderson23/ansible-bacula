@@ -1,0 +1,13 @@
+---
+# tasks file for bacula
+- import_tasks: centos.yml
+  when:
+    - ansible_os_family == "RedHat"
+
+- import_tasks: directories.yml
+
+- import_tasks: postgresql.yml
+  when: 
+    - db_type == 'postgresql'
+
+- import_tasks: bacula.yml

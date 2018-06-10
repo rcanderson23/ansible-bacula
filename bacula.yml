@@ -1,0 +1,23 @@
+---
+- name: get bacula client facts
+  hosts: ansible
+  tasks:
+    - name: ovirt tag facts
+      ovirt_vms_facts:
+        auth:
+          username: "{{ ansible_ovirt_user }}"
+          password: "{{ ansible_ovirt_pass }}"
+          url: "{{ ansible_ovirt_url }}"
+        pattern: tag=centos
+      register: clients
+      delegate_to: localhost
+      tags:
+        - bacula
+
+- name: install bacula-director and storage daemon
+  hosts: bacula
+  become: true
+  vars:
+    clients: "{{ hostvars['ansible']['clients'].ansible_facts.ovirt_vms }}"
+  roles:
+    - bacula

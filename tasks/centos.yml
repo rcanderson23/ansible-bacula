@@ -1,0 +1,16 @@
+---
+- name: install bacula packages and postgresql
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - bacula-director
+    - bacula-storage
+    - bacula-console
+    - postgresql-server
+    - postgresql-contrib
+    - python-psycopg2
+    - libselinux-python
+    - policycoreutils-python
+  tags:
+    - packages

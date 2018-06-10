@@ -1,0 +1,16 @@
+---
+- name: create bacula directories
+  file:
+    path: "{{ item }}"
+    owner: bacula
+    group: bacula
+    mode: 0700
+    setype: bacula_store_t
+    state: directory
+  with_items:
+    - /bacula
+    - /bacula/backup
+    - /bacula/restore
+  tags:
+    - directories
+
