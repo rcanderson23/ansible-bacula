@@ -14,3 +14,13 @@
     - policycoreutils-python
   tags:
     - packages
+
+- name: open firewall
+  firewalld:
+    service: bacula
+    permanent: true
+    state: enabled
+  notify:
+    - reload firewalld
+  tags:
+    - firewall
