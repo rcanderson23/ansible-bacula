@@ -1,8 +1,8 @@
 ---
 - name: Initialize postgresql db
-  shell: /usr/bin/postgresql-setup initdb
+  command: /usr/bin/postgresql-setup initdb
   args:
-    creates: /var/lib/pgsql/data
+    creates: /var/lib/pgsql/data/postgresql.conf
   tags:
     - db
 
@@ -51,6 +51,22 @@
   tags:
     - db
 
+- name: check if tables are added to bacula db
+  become_user: postgres
+  shell: "psql -d {{ db_name }} -c \"SELECT table_schema || '.' || table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');\" | grep public.job"
+  register: tables
+  ignore_errors: yes
+  changed_when: False
+  tags:
+    - db
+
+- name: create bacula db tables
+  become_user: postgres
+  shell: /usr/libexec/bacula/make_postgresql_tables 
+  when: tables.rc != 0
+  tags:
+    - db
+
 - name: Give bacula user db privileges
   become_user: postgres
   postgresql_privs:
@@ -70,20 +86,5 @@
     objs: ALL_IN_SCHEMA 
     privs: SELECT,UPDATE
     type: sequence
-  tags:
-    - db
-- name: check if tables are added to bacula db
-  become_user: postgres
-  shell: "psql -d {{ db_name }} -c \"SELECT table_schema || '.' || table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');\" | grep public.job"
-  register: tables
-  ignore_errors: yes
-  changed_when: False
-  tags:
-    - db
-
-- name: create bacula db tables
-  become_user: postgres
-  shell: /usr/libexec/bacula/make_postgresql_tables 
-  when: tables.rc != 0
   tags:
     - db
