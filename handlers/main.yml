@@ -14,3 +14,8 @@
   service:
     name: bacula-sd
     state: restarted
+
+- name: reload firewalld
+  service:
+    name: firewalld
+    state: restarted
