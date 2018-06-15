@@ -9,6 +9,7 @@
   with_items:
     - { src: 'bacula-dir.conf.j2', dest: '/etc/bacula/bacula-dir.conf' }
     - { src: 'bacula-sd.conf.j2', dest: '/etc/bacula/bacula-sd.conf' }
+    - { src: 'bconsole.conf.j2', dest: '/etc/bacula/bconsole.conf' }
   notify:
     - restart bacula-dir
     - restart bacula-sd
